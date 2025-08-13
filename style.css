@@ -1,0 +1,48 @@
+@import url('general/general.css');
+
+/* Main styles */
+.main {
+    width: 100%;
+    margin-top: 250px;
+}
+
+/* Form styles */
+.main__form {
+    width: 50%;
+    max-width: 500px;
+    min-width: 300px;
+    margin: 0 auto;
+}
+.form {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 15px;
+}
+.form__fieldset {
+}
+.form__label, .form__input {
+    display: block;
+}
+.form__label {
+    font-size: 0.95em;
+    font-weight: 700;
+}
+.form__input {
+    margin-top: 5px;
+    border: 1px solid black;
+    padding: 5px 10px;
+    width: 100%;
+    height: 3em;
+    border-radius: 5px;
+}
+.form__input:focus {
+    outline: 1px solid black;
+}
+.form__input:invalid {
+    border-color: red;
+}
+.form__button {
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px 0;
+}
