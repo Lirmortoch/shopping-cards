@@ -20,3 +20,9 @@ function keepOpenDropMenu(e) {
 }
 
 document.addEventListener('click', keepOpenDropMenu);
+
+const delay = 4000;
+
+setTimeout(() => {
+    document.querySelector('.star').classList.add('show-star');
+}, delay*3);
