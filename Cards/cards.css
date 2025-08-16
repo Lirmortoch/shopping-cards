@@ -1,2 +1,92 @@
 @import url('../general/general.css');
 
+.main {
+    width: 95%;
+    margin: 10px auto;
+}
+.main__cart {
+    margin: 0 10px 25px auto;
+}
+.cart {
+    display: block;
+
+    width: 50px;
+    height: 50px;
+    
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+
+    position: relative;
+}
+.cart::after {
+    content: '0';
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50px;
+
+    background-color: rgb(158, 15, 15);
+    color: white;
+    
+    font-size: 1em;
+
+    position: absolute;
+    right: calc(0px - 25%);
+    top: calc(0px - 30%);
+}
+.cart svg {
+    width: 100%;
+    height: 100%;
+}
+.main__cards {
+    
+}
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+    justify-content: center;
+    column-gap: 15px;
+    row-gap: 30px;
+}
+.cards__item {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    transition: all 0.3s ease 0s;
+    height: fit-content;
+}
+.cards__item:hover {
+    color: rgb(158, 15, 15);
+}
+.card {
+}
+.card__image {
+    background-color: rgb(245, 245, 245);
+
+    border-radius: 15px;
+
+    max-width: 100%;
+
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.card__image img {
+    width: 100%;   
+    aspect-ratio: 1 / 1;
+    padding: 20px;
+}
+.card__title {
+    font-size: 1em;
+}
+.card__price {
+    font-size: .85em;
+}

@@ -127,6 +127,9 @@ a, button {
     right: 0;
     
     transition: opacity 150ms ease-in-out, transform 150ms ease-in-out, all 0.3s ease 0s;
+    
+    background-color: white;
+    z-index: 2;
 }
 .nested-dropdown > .dropdown__content {
     position: absolute;
@@ -191,8 +194,13 @@ a, button {
     transition: all 0.3s ease 0s;
 }
 .star svg {
-    width: 40px;
-    height: 40px;
+    width: 3.3vw;
+    height: 3.3vw;
+
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 58px;
+    max-height: 58px;
 }
 .star.show-star {
     animation: spin 3s linear infinite;
@@ -202,10 +210,9 @@ a, button {
 }
 
 /* Media requires */
-@media screen and (min-width: 1199px) {
-    .star svg {
-        width: 50px;
-        height: 50px;
+@media screen and (max-width: 799px) {
+    .logo__link {
+        transform: translateX(calc(-25% + 1.25vw));
     }
 }
 @media screen and (max-width: 599px) {
@@ -249,11 +256,16 @@ a, button {
     .main-dropdown > .dropdown__content {
         position: absolute;
         transform: translateY(-10px);
-        top: calc(100% + 10px + 10px);
+        top: calc(100% + 10px + 5px);
 
         opacity: 0;
         pointer-events: none;
         cursor: none;
+
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 2px 4px 12px 0 rgb(0 0 0 / .05);
     }
     .main-dropdown.active > .dropdown__content {
         opacity: 1;
