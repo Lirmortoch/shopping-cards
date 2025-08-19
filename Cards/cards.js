@@ -6,7 +6,7 @@ function showItems(items) {
 
     items.forEach(item => {
         cards.insertAdjacentHTML('beforeend', `
-                <div class='cards__item card'>
+                <div class='cards__item card pop-up-open-btn'>
                     <div class='card__image'>
                         <img src='${item.image}' alt='product photo'>
                     </div>
@@ -42,33 +42,79 @@ function searchItem(items, title) {
     
 }
 function showItem(popUp, target) {
-    const itemTitle = target.closest('.cards__item').querySelector('.card__title').textContent;
-    const item = items.filter(item => item.title === itemTitle)[0];
-
-    popUp.querySelector('.item-page__title').textContent = item.title;
-    popUp.querySelector('.item-page__photo > img').src = item.image;
-    popUp.querySelector('.item-page__description').textContent = item.description;
-    popUp.querySelector('.item-page__price').textContent = `$${item.price}`;
-}
-function openPopUp(e) {
-    const target = e.target.closest('.cards__item');
-    
-    if (target === null) return;
-    
-    const popUp = document.querySelector('.pop-up');
-
-    popUp.classList.add('active');
     document.body.classList.add('pop-up-lock');
     window.scrollTo(0, 0);
 
-    showItem(popUp, e.target);
+    const itemTitle = target.closest('.cards__item').querySelector('.card__title').textContent;
+    const item = items.filter(item => item.title === itemTitle)[0];
+    const popUpWrap = popUp.querySelector('.pop-up__wrap');
+    
+    popUpWrap.innerHTML = '';
+
+    popUpWrap.insertAdjacentHTML('beforeend', `
+        <button class='pop-up__close-btn close-btn'>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 16 16">
+                <path d="M0 14.545L1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z" fill-rule="evenodd"/>
+            </svg>
+        </button>
+        <div class="pop-up__item-page item-page">
+            <h2 class="item-page__title"></h2>
+            <div class="item-page__photo">
+                <img src='' alt='item photo'>
+            </div>
+            <p class="item-page__description"></p>
+            <p class="item-page__price"></p>
+        </div>
+    `);
+
+    popUpWrap.querySelector('.item-page__title').textContent = item.title;
+    popUpWrap.querySelector('.item-page__photo > img').src = item.image;
+    popUpWrap.querySelector('.item-page__description').textContent = item.description;
+    popUpWrap.querySelector('.item-page__price').textContent = `$${item.price}`;
+}
+function showNotification(popUp, target = '') {
+    const popUpWrap = popUp.querySelector('.pop-up__wrap');
+
+    popUpWrap.innerHTML = '';
+    popUpWrap.insertAdjacentHTML('beforeend', `
+        <p class='pop-up__text'>Item was added successfully</p>
+    `);
+
+    setTimeout(() => {
+        popUp.classList.remove('notification');
+        popUp.classList.remove('active');
+    }, 5000);
+}
+
+function openPopUp(e) {
+    const target = e.target.closest('.pop-up-open-btn');
+    
+    if (target === null) return;
+    
+    let popUp;
+
+    if (target.classList.contains('notification')) {
+        popUp = document.querySelector('.pop-up-notific');
+        showNotification(popUp, target);
+    }
+    else { 
+        popUp = document.querySelector('.pop-up-page');
+        showItem(popUp, target);
+    }
+    
+    popUp.classList.add('active');
 }
 function closePopUp(e) {
     const target = e.target.closest('.pop-up__close-btn');
     
     if (target === null) return;
 
-    document.querySelector('.pop-up').classList.remove('active');
+    const popUp = document.querySelector('.pop-up');
+    
+    popUp.classList.remove('item-page');
+    popUp.classList.remove('notification');
+    popUp.classList.remove('active');
+    
     document.body.classList.remove('pop-up-lock');
 }
 
@@ -77,23 +123,10 @@ document.addEventListener('click', closePopUp);
 
 function createPopUp() {
     document.body.insertAdjacentHTML('beforeend', `
-        <div class='pop-up pop-up-background'>
+        <div class='pop-up pop-up-background pop-up-page'>
             <div class='pop-up__block'>
                 <div class="pop-up__wrap pop-up-content">
-                    <button class='pop-up__close-btn close-btn'>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 16 16">
-                            <path d="M0 14.545L1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z" fill-rule="evenodd"/>
-                        </svg>
-                    </button>
-
-                    <div class="pop-up__item-page item-page">
-                        <h2 class="item-page__title"></h2>
-                        <div class="item-page__photo">
-                            <img src='' alt='item photo'>
-                        </div>
-                        <p class="item-page__description"></p>
-                        <p class="item-page__price"></p>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -101,3 +134,15 @@ function createPopUp() {
 }
 createPopUp();
 
+function createPopUpNotific() {
+    document.body.insertAdjacentHTML('beforeend', `
+        <div class='pop-up pop-up-background pop-up-notific'>
+            <div class='pop-up__block'>
+                <div class="pop-up__wrap pop-up-content">
+                    
+                </div>
+            </div>
+        </div>
+    `);
+}
+createPopUpNotific();
