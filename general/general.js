@@ -7,7 +7,9 @@ function keepOpenDropMenu(e) {
 
     if (isDropDownButton) {
         currentDropDown = e.target.closest('[data-dropdown]');
-        currentDropDown.classList.toggle('active');
+
+        if (currentDropDown.querySelector('.dropdown__content').innerHTML.length !== 0) currentDropDown.classList.toggle('active');
+
         currentDropDown.querySelector(`.${currentDropDown.className.match(/(nested-dropdown)|(main-dropdown)/)[0]} > button > .dropdown__caret`)?.classList.toggle('caret__rotate'); 
     }
 

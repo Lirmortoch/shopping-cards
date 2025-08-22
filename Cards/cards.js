@@ -1,14 +1,13 @@
 let items;
-let cart = [];
 
 function showItems(items) {
     const cards = document.querySelector('.main__cards.cards');
 
     items.forEach(item => {
         cards.insertAdjacentHTML('beforeend', `
-                <div class='cards__item card pop-up-open-btn'>
+                <div class='cards__item card pop-up-open-btn' draggable='true'>
                     <div class='card__image'>
-                        <img src='${item.image}' alt='product photo'>
+                        <img src='${item.image}' alt='product photo' draggable='false'>
                     </div>
                     <p class='card__price'>$${item.price}</p>
                     <h3 class='card__title'>${item.title}</h3>
@@ -38,6 +37,7 @@ getItems();
 
 items = JSON.parse(localStorage.getItem('items'));
 
+// Pop-Up functions
 function searchItem(items, title) {
     
 }
@@ -72,13 +72,15 @@ function showItem(popUp, target) {
     popUpWrap.querySelector('.item-page__description').textContent = item.description;
     popUpWrap.querySelector('.item-page__price').textContent = `$${item.price}`;
 }
-function showNotification(popUp, target = '') {
+function showNotification(popUp) {
     const popUpWrap = popUp.querySelector('.pop-up__wrap');
 
     popUpWrap.innerHTML = '';
     popUpWrap.insertAdjacentHTML('beforeend', `
         <p class='pop-up__text'>Item was added successfully</p>
     `);
+
+    popUp.classList.add('active');
 
     setTimeout(() => {
         popUp.classList.remove('notification');
@@ -91,16 +93,8 @@ function openPopUp(e) {
     
     if (target === null) return;
     
-    let popUp;
-
-    if (target.classList.contains('notification')) {
-        popUp = document.querySelector('.pop-up-notific');
-        showNotification(popUp, target);
-    }
-    else { 
-        popUp = document.querySelector('.pop-up-page');
-        showItem(popUp, target);
-    }
+    let popUp = document.querySelector('.pop-up-page');
+    showItem(popUp, target);
     
     popUp.classList.add('active');
 }
@@ -118,7 +112,7 @@ function closePopUp(e) {
     document.body.classList.remove('pop-up-lock');
 }
 
-document.addEventListener('click', openPopUp);
+document.addEventListener('dblclick', openPopUp);
 document.addEventListener('click', closePopUp);
 
 function createPopUp() {
@@ -146,3 +140,95 @@ function createPopUpNotific() {
     `);
 }
 createPopUpNotific();
+
+// Cart functions
+
+// let cursor = {
+//     x: null,
+//     y: null,
+// }
+// let card = {
+//     dom: null,
+//     x: null,
+//     y: null,
+// }
+
+// function clickOnItem(e) {
+//     const target = e.target.closest('.card');
+    
+//     if (target === null) return;
+
+//     e.preventDefault();
+
+//     const temp = e.target.classList.contains('card') ? e.target : e.target.parentElement.parentElement;
+
+//     cursor = {
+//         x: e.clientX,
+//         y: e.clientY,
+//     }
+//     card = {
+//         dom: temp,
+//         x: e.target.getBoundingClientRect().left,
+//         y: e.target.getBoundingClientRect().top,
+//     }
+
+//     card.dom.style.position = 'absolute';
+//     card.dom.style.width = '200px';
+//     card.dom.style.height = '200px';
+// }
+// function moveItem(e) {
+//     if (card.dom === null) return;
+    
+//     e.preventDefault();
+
+//     let currentCursor = {
+//         x: e.clientX,
+//         y: e.clientY,
+//     }
+//     let distance = {
+//         x: currentCursor.x - cursor.x,
+//         y: currentCursor.y - cursor.y,
+//     }
+
+//     card.dom.style.left = `${(card.x + distance.x)}px`;
+//     card.dom.style.top = `${(card.y + distance.y)}px`;
+
+//     card.dom.style.cursor = 'grab';
+// }
+// function endItemMove() {
+//     if (card.dom === null) return;
+
+//     card.dom.style.cursor = 'auto';
+
+//     card.dom = null;
+// }
+
+// document.addEventListener('mousedown', clickOnItem);
+// document.addEventListener('mousemove', moveItem);
+// document.addEventListener('mouseup', endItemMove);
+
+const cartBtn = document.querySelector('.cart');
+const cart = document.querySelector('.cart-section__items');
+const cartCount = cartBtn.querySelector('.cart__after');
+const popUpNotification = document.querySelector('.pop-up-notific');
+
+function addItemToCart(e) {
+    if (!e.target.classList.contains('card')) return;
+
+    let selected = e.target;
+
+    e.target.style.cursor = 'copy';
+
+    cartBtn.addEventListener('dragover', (e) => e.preventDefault());
+    cartBtn.addEventListener('drop', (e) => {
+        cart.insertAdjacentHTML('beforeend', `<li class='cart-section__item'>${selected.innerHTML}</li>`);
+        selected.style.cursor = 'auto';
+        
+        let temp = Number(cartCount.textContent);
+        cartCount.textContent = ++temp;
+
+        showNotification(popUpNotification);
+    });
+}
+
+document.addEventListener('dragstart', addItemToCart);
