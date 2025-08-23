@@ -2,7 +2,8 @@ let items;
 
 function showItems(items) {
     const cards = document.querySelector('.main__cards.cards');
-
+    
+    cards.innerHTML = '';
     items.forEach(item => {
         cards.insertAdjacentHTML('beforeend', `
                 <div class='cards__item card pop-up-open-btn' draggable='true'>
@@ -36,11 +37,14 @@ async function getItems() {
 getItems();
 
 items = JSON.parse(localStorage.getItem('items'));
+const sortedItemsByTitle = items.sort((a,b) => {
+    if (a.title > b.title) return 1;
+    else if (a.title < b.title) return -1;
+
+    return 0;
+});
 
 // Pop-Up functions
-function searchItem(items, title) {
-    
-}
 function showItem(popUp, target) {
     document.body.classList.add('pop-up-lock');
     window.scrollTo(0, 0);
@@ -256,3 +260,21 @@ function deleteItem(e) {
 
 document.addEventListener('click', deleteItem);
 document.addEventListener('click', clearCart);
+
+// Search and Sort Functions
+function searchItem(items, title) {
+    
+}
+function showFoundedItem(e) {
+    if (!e.target.classList.contains('search-form')) return;
+
+    e.preventDefault();
+    
+    const value = document.querySelector
+    ('#form-input').value;
+    const temp = items.filter(item => item.title.includes(value));
+
+    if (value.length > 0 && temp.length > 0) showItems(temp);
+}
+
+document.addEventListener('submit', showFoundedItem);

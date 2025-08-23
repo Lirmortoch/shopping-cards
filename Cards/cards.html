@@ -79,6 +79,17 @@
     </header>
 
     <main class="main">
+        <section class="main__form form">
+            <form action="#" class="search-form">
+                <fieldset class="form__fieldset">
+                    <!-- <label for="form-search">Enter item's name</label> -->
+                    <input type="text" name="form-input" id="form-input" placeholder="Enter item's name" class="search-form__text-input">
+                </fieldset>
+
+                <button type="submit" class="form__submit-btn button my-links__button">Search</button>
+            </form>
+        </section>
+
         <section class="main__cart-section cart-section nested-dropdown" data-dropdown>
             <button type="button" class="main__cart cart notification" data-dropdown-button>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -94,7 +105,7 @@
 
             <div class="cart-section__wrap dropdown__content">
                 <button class="cart-items__delete-all-btn button my-links__button" type="button">Delete All</button>
-                
+
                 <ul class="cart-section__items cart-items"></ul>
             </div>
         </section>
