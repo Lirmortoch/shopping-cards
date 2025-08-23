@@ -324,6 +324,6 @@ function ora(e) {
 
     setTimeout(() => {
         window.location.href = 'https://www.youtube.com/watch?v=_Mp7DlzgrUA&ab_channel=SonPlatinum';
-    }, 5050);
+    }, 5750);
 }
 document.querySelector('.logo__star').addEventListener('click', ora);
