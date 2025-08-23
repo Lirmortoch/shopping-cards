@@ -23,8 +23,8 @@ async function sendData(obj) {
 function checkData(e) {
     e.preventDefault();
 
-    const userName = e.target.querySelector('#form-username').value;
-    const passWord = e.target.querySelector('#form-password').value;
+    const userName = e.target.querySelector('#form-username').value.trim();
+    const passWord = e.target.querySelector('#form-password').value.trim();
 
     sendData({username: userName, password: passWord});
 }
