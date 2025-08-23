@@ -13,7 +13,7 @@ async function sendData(obj) {
 
         const data = await resp.json();
 
-        if (resp.status === 201 && data.token.length !== 0) window.location.href = '../Cards/cards.html'
+        if (resp.status === 201 && data.token.length !== 0) window.location.href = 'Cards/cards.html'
     }
     catch(err) {
         console.error(err);
