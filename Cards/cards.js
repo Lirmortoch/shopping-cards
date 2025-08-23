@@ -112,7 +112,7 @@ function closePopUp(e) {
     document.body.classList.remove('pop-up-lock');
 }
 
-document.addEventListener('dblclick', openPopUp);
+document.addEventListener('click', openPopUp);
 document.addEventListener('click', closePopUp);
 
 function createPopUp() {
@@ -212,23 +212,47 @@ const cart = document.querySelector('.cart-section__items');
 const cartCount = cartBtn.querySelector('.cart__after');
 const popUpNotification = document.querySelector('.pop-up-notific');
 
+let selected = null;
+
 function addItemToCart(e) {
     if (!e.target.classList.contains('card')) return;
 
-    let selected = e.target;
+    selected = e.target;
+}
+function dropItem(e) {
+    cart.insertAdjacentHTML('beforeend', `
+        <li class='cart-section__item cart-item'>
+            ${selected.innerHTML}
+            <button class='cart-item__delete-btn button my-links__button'>Delete</button>
+        </li>
+    `);
+    
+    let temp = Number(cartCount.textContent);
+    cartCount.textContent = ++temp;
 
-    e.target.style.cursor = 'copy';
-
-    cartBtn.addEventListener('dragover', (e) => e.preventDefault());
-    cartBtn.addEventListener('drop', (e) => {
-        cart.insertAdjacentHTML('beforeend', `<li class='cart-section__item'>${selected.innerHTML}</li>`);
-        selected.style.cursor = 'auto';
-        
-        let temp = Number(cartCount.textContent);
-        cartCount.textContent = ++temp;
-
-        showNotification(popUpNotification);
-    });
+    showNotification(popUpNotification);
+}
+function dragOverItem(e) {
+    e.preventDefault();
 }
 
 document.addEventListener('dragstart', addItemToCart);
+cartBtn.addEventListener('drop', dropItem);
+cartBtn.addEventListener('dragover', dragOverItem);
+
+function clearCart(e) {
+    if (!e.target.classList.contains('cart-items__delete-all-btn')) return;
+
+    cart.innerHTML = '';
+    cartCount.textContent = 0;
+}
+function deleteItem(e) {
+    if (!e.target.classList.contains('cart-item__delete-btn')) return;
+
+    e.target.parentElement.remove();
+    let temp = Number(cartCount.textContent);
+    cartCount.textContent = --temp;
+}
+
+document.addEventListener('click', deleteItem);
+document.addEventListener('click', clearCart);

@@ -1,3 +1,4 @@
+// Pop-Up functions
 function keepOpenDropMenu(e) {
     const isDropDownButton = e.target.matches('[data-dropdown-button], [data-dropdown-button] *');
 
