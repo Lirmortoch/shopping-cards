@@ -106,12 +106,12 @@ function showItem(popUp, target) {
         </span>
     `;
 }
-function showNotification(popUp) {
+function showNotification(popUp, text = 'Item was added successfully') {
     const popUpWrap = popUp.querySelector('.pop-up__wrap');
 
     popUpWrap.innerHTML = '';
     popUpWrap.insertAdjacentHTML('beforeend', `
-        <p class='pop-up__text'>Item was added successfully</p>
+        <p class='pop-up__text'>${text}</p>
     `);
 
     popUp.classList.add('active');
@@ -119,6 +119,7 @@ function showNotification(popUp) {
     setTimeout(() => {
         popUp.classList.remove('notification');
         popUp.classList.remove('active');
+        popUp.classList.remove('ora');
     }, 5000);
 }
 
@@ -317,3 +318,12 @@ function viewBy(e) {
 
 document.addEventListener('input', viewBy);
 document.addEventListener('submit', showFoundedItem);
+
+function ora(e) {    
+    showNotification(popUpNotification, 'ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA');
+
+    setTimeout(() => {
+        window.location.href = 'https://www.youtube.com/watch?v=_Mp7DlzgrUA&ab_channel=SonPlatinum';
+    }, 5050);
+}
+document.querySelector('.logo__star').addEventListener('click', ora);

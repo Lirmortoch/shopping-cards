@@ -4,10 +4,21 @@
     position: relative;
     z-index: 4;
 }
+.logo__star {
+    cursor: pointer;
+}
+.logo__star:active svg path:first-child {
+    fill: #ee573e;
+}
+.logo__star:active svg path:last-child {
+    fill: #f3f47d;
+}
+
 .main {
     width: 95%;
     margin: 10px auto;
 }
+
 .main__cart-section {
     margin-bottom: 25px;
     position: relative;
