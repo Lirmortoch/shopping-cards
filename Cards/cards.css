@@ -152,6 +152,12 @@
 }
 .card__price {
     font-size: .85em;
+    display: flex;
+    justify-content: space-between;
+}
+.card__price span:last-of-type {
+    display: flex;
+    flex-flow: row nowrap;
 }
 
 /* Pop-Up styles */
@@ -176,7 +182,7 @@
 }
 .pop-up-notific {
     transform: translateX(-100%);
-    top: 8%;
+    top: 15%;
     z-index: 5;
 }
 
@@ -246,6 +252,7 @@ body.pop-up-lock {
         'photo title'
         'photo description'
         'photo price'
+        'photo rating'
     ;
     align-items: center;
     column-gap: 20px;
@@ -273,13 +280,28 @@ body.pop-up-lock {
     align-self: start;
     grid-area: price;
 }
+.item-page__rating {
+    align-self: start;
+    grid-area: rating;
+}
+.item-page__rating span:not(:last-child) {
+    margin-right: 25px;
+}
 
 .form {
-    width: 30vw;
-    min-width: 175px;
-    max-width: 300px;
+    width: fit-content;
 
     margin: 0 auto 10px;
+
+    display: flex;
+    align-items: start;
+    gap: 10px;
+}
+.form__group {
+    border: 1px solid black;
+    border-radius: 5px;
+
+    padding: 5px;
 }
 .search-form {
     display: flex;

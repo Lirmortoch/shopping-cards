@@ -88,6 +88,16 @@
 
                 <button type="submit" class="form__submit-btn button my-links__button">Search</button>
             </form>
+
+            <select name="form-select" id="form-select" class="form__group" title="group">
+                <option value="">--Group by--</option>
+                <option value="price">Price (Low to High)</option>
+                <option value="price" data-reverse="true">Price (Hight to Low)</option>
+                <option value="title">Title</option>
+                <option value="category">Category</option>
+                <option value="rating rate">Rating (Low to High)</option>
+                <option value="rating rate" data-reverse="true">Rating (High to Low)</option>
+            </select>
         </section>
 
         <section class="main__cart-section cart-section nested-dropdown" data-dropdown>

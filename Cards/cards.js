@@ -10,7 +10,13 @@ function showItems(items) {
                     <div class='card__image'>
                         <img src='${item.image}' alt='product photo' draggable='false'>
                     </div>
-                    <p class='card__price'>$${item.price}</p>
+                    <div class='card__price'>
+                        <span>$${item.price}</span> 
+                        <span>
+                            ${item.rating.rate}
+                            ☆
+                        </span>
+                    </div>
                     <h3 class='card__title'>${item.title}</h3>
                 </div>
             `)
@@ -26,7 +32,7 @@ async function getItems() {
             throw new Error(errorMsg);
         }
 
-        localStorage.setItem('items', JSON.stringify(items));
+        localStorage.setItem('items', JSON.stringify(data));
         showItems(data);
     }
     catch(err) {
@@ -36,19 +42,32 @@ async function getItems() {
 
 getItems();
 
-items = JSON.parse(localStorage.getItem('items'));
-const sortedItemsByTitle = items.sort((a,b) => {
-    if (a.title > b.title) return 1;
-    else if (a.title < b.title) return -1;
+const getObjValue = (obj, path) => path.split(' ').reduce((acc, key) => acc?.[key], obj);
 
-    return 0;
-});
+function sortItems(array, property, highToLow = false) {
+    const temp = [...array]; 
+
+    if (highToLow) {
+        return temp.sort((a,b) => {
+            if (getObjValue(a, property) < getObjValue(b, property)) return 1;
+            else if (getObjValue(a, property) > getObjValue(b, property)) return -1;
+
+            return 0;
+        });
+    }
+
+    return temp.sort((a,b) => {
+        if (getObjValue(a, property) > getObjValue(b, property)) return 1;
+        else if (getObjValue(a, property) < getObjValue(b, property)) return -1;
+
+        return 0;
+    });
+}
+
+items = JSON.parse(localStorage.getItem('items')); 
 
 // Pop-Up functions
 function showItem(popUp, target) {
-    document.body.classList.add('pop-up-lock');
-    window.scrollTo(0, 0);
-
     const itemTitle = target.closest('.cards__item').querySelector('.card__title').textContent;
     const item = items.filter(item => item.title === itemTitle)[0];
     const popUpWrap = popUp.querySelector('.pop-up__wrap');
@@ -68,13 +87,24 @@ function showItem(popUp, target) {
             </div>
             <p class="item-page__description"></p>
             <p class="item-page__price"></p>
+            <p class='item-page__rating'></p>
         </div>
     `);
 
     popUpWrap.querySelector('.item-page__title').textContent = item.title;
     popUpWrap.querySelector('.item-page__photo > img').src = item.image;
     popUpWrap.querySelector('.item-page__description').textContent = item.description;
-    popUpWrap.querySelector('.item-page__price').textContent = `$${item.price}`;
+    popUpWrap.querySelector('.item-page__price').innerHTML = `
+        <span>$${item.price}</span> 
+    `;
+    popUpWrap.querySelector('.item-page__rating').innerHTML = `
+        <span>
+            ${item.rating.rate}☆
+        </span>
+        <span>
+            ${item.rating.count} reviews
+        </span>
+    `;
 }
 function showNotification(popUp) {
     const popUpWrap = popUp.querySelector('.pop-up__wrap');
@@ -99,7 +129,10 @@ function openPopUp(e) {
     
     let popUp = document.querySelector('.pop-up-page');
     showItem(popUp, target);
-    
+
+    document.body.classList.add('pop-up-lock');
+    popUp.style.top = window.scrollY + 'px';
+
     popUp.classList.add('active');
 }
 function closePopUp(e) {
@@ -262,9 +295,6 @@ document.addEventListener('click', deleteItem);
 document.addEventListener('click', clearCart);
 
 // Search and Sort Functions
-function searchItem(items, title) {
-    
-}
 function showFoundedItem(e) {
     if (!e.target.classList.contains('search-form')) return;
 
@@ -274,7 +304,16 @@ function showFoundedItem(e) {
     ('#form-input').value;
     const temp = items.filter(item => item.title.includes(value));
 
-    if (value.length > 0 && temp.length > 0) showItems(temp);
+    showItems(temp);
+}
+function viewBy(e) {
+    if (!e.target.classList.contains('form__group')) return;
+
+    const isReverse = e.target.selectedOptions[0].dataset.reverse;
+
+    const array = sortItems(items, e.target.value, isReverse);
+    showItems(array);
 }
 
+document.addEventListener('input', viewBy);
 document.addEventListener('submit', showFoundedItem);
